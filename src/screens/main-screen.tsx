@@ -8,22 +8,39 @@ import {
   ScrollView,
   Switch,
   Text,
-  VStack,
-  useColorModeValue
+  VStack
 } from 'native-base';
 
 import InputElement from '../components/input-element';
-import Masthead from '../components/masthead';
-import NavBar from '../components/navbar';
 import { Platform } from 'react-native';
 import Separator from '../components/separator';
-import ThemeToggle from '../components/theme-toggle';
 
 export default function MainScreen() {
-  console.log(Platform);
+  const [autonomousScore, setAutonomousScore] = React.useState(0);
+  const [teleoperatedScore, setTeleoperatedScore] = React.useState(0);
+  const [endgameScore, setEndgameScore] = React.useState(0);
+
+  const [totalScore, setTotalScore] = React.useState(0);
+
+  const [duckDelivered, setDuckDelivered] = React.useState(false);
+  const [storageFreight, setStorageFreight] = React.useState(0);
+  const [freightOne, setFreightOne] = React.useState(0);
+  const [freightTwo, setFreightTwo] = React.useState(0);
+  const [freightThree, setFreightThree] = React.useState(0);
+  const [parkingOne, setParkingOne] = React.useState<
+    'none' | 'storage' | 'warehouse'
+  >('none');
+  const [parkingTwo, setParkingTwo] = React.useState<
+    'none' | 'storage' | 'warehouse'
+  >('none');
+  const [statusOne, setStatusOne] = React.useState<
+    'partially' | 'fully' | undefined
+  >(undefined);
+  const [statusTwo, setStatusTwo] = React.useState<
+    'partially' | 'fully' | undefined
+  >(undefined);
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
-      {/* <NavBar /> */}
       <Box width={'full'} height={'full'} padding={4}>
         <ScrollView
           showsVerticalScrollIndicator={Platform.OS !== 'web' ? false : true}
@@ -32,12 +49,10 @@ export default function MainScreen() {
             <Text fontSize={'3xl'} fontWeight={'semibold'}>
               Match Scorer
             </Text>
-
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
               Match Information
             </Text>
             <Separator />
-
             <InputElement text="Team number">
               <Input placeholder="15965" maxWidth={'16'} type="number" />
             </InputElement>
@@ -46,39 +61,110 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              Autonomous
+              Autonomous: {autonomousScore}
             </Text>
             <Separator />
-
             <InputElement text="Duck delivered">
               <Switch></Switch>
             </InputElement>
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Text marginRight={'2'}>{storageFreight}</Text>
+                <Button
+                  marginRight={'2'}
+                  onPress={() => {
+                    setStorageFreight(
+                      storageFreight === 0 ? 0 : storageFreight - 1
+                    );
+                    setAutonomousScore(
+                      storageFreight === 0
+                        ? autonomousScore
+                        : autonomousScore - 1
+                    );
+                  }}
+                >
+                  -
+                </Button>
+                <Button
+                  onPress={() => {
+                    setStorageFreight(storageFreight + 1);
+                    setAutonomousScore(autonomousScore + 1);
+                  }}
+                >
+                  +
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Text marginRight={'2'}>{freightOne}</Text>
+                <Button
+                  marginRight={'2'}
+                  onPress={() => {
+                    setFreightOne(freightOne === 0 ? 0 : freightOne - 1);
+                    setAutonomousScore(
+                      freightOne === 0 ? autonomousScore : autonomousScore - 1
+                    );
+                  }}
+                >
+                  -
+                </Button>
+                <Button
+                  onPress={() => {
+                    setFreightOne(freightOne + 1);
+                    setAutonomousScore(autonomousScore + 1);
+                  }}
+                >
+                  +
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 2 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Text marginRight={'2'}>{freightTwo}</Text>
+                <Button
+                  marginRight={'2'}
+                  onPress={() => {
+                    setFreightTwo(freightTwo === 0 ? 0 : freightTwo - 1);
+                    setAutonomousScore(
+                      freightTwo === 0 ? autonomousScore : autonomousScore - 1
+                    );
+                  }}
+                >
+                  -
+                </Button>
+                <Button
+                  onPress={() => {
+                    setFreightTwo(freightTwo + 1);
+                    setAutonomousScore(autonomousScore + 1);
+                  }}
+                >
+                  +
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 3 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Text marginRight={'2'}>{freightThree}</Text>
+                <Button
+                  marginRight={'2'}
+                  onPress={() => {
+                    setFreightThree(freightThree === 0 ? 0 : freightThree - 1);
+                    setAutonomousScore(
+                      freightThree === 0 ? autonomousScore : autonomousScore - 1
+                    );
+                  }}
+                >
+                  -
+                </Button>
+                <Button
+                  onPress={() => {
+                    setFreightThree(freightThree + 1);
+                    setAutonomousScore(autonomousScore + 1);
+                  }}
+                >
+                  +
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Parking in">
@@ -109,10 +195,9 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              Teleoperated
+              Teleoperated: {teleoperatedScore}
             </Text>
             <Separator />
-
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
@@ -150,10 +235,9 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              End Game
+              End Game: {endgameScore}
             </Text>
             <Separator />
-
             <InputElement text="Carousel">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
@@ -190,15 +274,13 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              Total score
+              Total score: {totalScore}
             </Text>
             <Separator />
-            <InputElement text="Autonomous">10</InputElement>
-            <InputElement text="Teleoperated">20</InputElement>
-            <InputElement text="End game">30</InputElement>
-            <InputElement text="Total">60</InputElement>
-
-            <ThemeToggle />
+            <InputElement text="Autonomous">{autonomousScore}</InputElement>
+            <InputElement text="Teleoperated">{teleoperatedScore}</InputElement>
+            <InputElement text="End game">{endgameScore}</InputElement>
+            <InputElement text="Total">{totalScore}</InputElement>
           </VStack>
         </ScrollView>
       </Box>

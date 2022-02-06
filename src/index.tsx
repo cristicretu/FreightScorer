@@ -11,7 +11,6 @@ const App = () => {
     <Drawer.Navigator
       initialRouteName="Main"
       screenOptions={{
-        // headerShown: false,
         drawerType: 'back',
         headerStyle: {
           backgroundColor: '#fa0304'

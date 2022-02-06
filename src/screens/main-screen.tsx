@@ -13,14 +13,21 @@ import {
 } from 'native-base';
 
 import InputElement from '../components/input-element';
+import Masthead from '../components/masthead';
+import NavBar from '../components/navbar';
+import { Platform } from 'react-native';
 import Separator from '../components/separator';
 import ThemeToggle from '../components/theme-toggle';
 
 export default function MainScreen() {
+  console.log(Platform);
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
-      <Box width={'full'} padding={4}>
-        <ScrollView>
+      {/* <NavBar /> */}
+      <Box width={'full'} height={'full'} padding={4}>
+        <ScrollView
+          showsVerticalScrollIndicator={Platform.OS !== 'web' ? false : true}
+        >
           <VStack>
             <Text fontSize={'3xl'} fontWeight={'semibold'}>
               Match Scorer

@@ -8,8 +8,21 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
-    <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="Main" component={MainScreen} />
+    <Drawer.Navigator
+      initialRouteName="Main"
+      screenOptions={{
+        // headerShown: false,
+        drawerType: 'back',
+        headerStyle: {
+          backgroundColor: '#fa0304'
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold'
+        }
+      }}
+    >
+      <Drawer.Screen name="Esentza | FTC Scorer" component={MainScreen} />
     </Drawer.Navigator>
   );
 };

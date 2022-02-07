@@ -13,7 +13,7 @@ import {
 
 import { AntDesign } from '@expo/vector-icons';
 import InputElement from '../components/input-element';
-import { Platform } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import Separator from '../components/separator';
 
 export default function MainScreen() {
@@ -36,10 +36,12 @@ export default function MainScreen() {
   >('none');
   const [statusOne, setStatusOne] = React.useState<
     'partially' | 'fully' | undefined
-  >(undefined);
+  >('partially');
   const [statusTwo, setStatusTwo] = React.useState<
     'partially' | 'fully' | undefined
-  >(undefined);
+  >('partially');
+
+  React.useEffect(() => {}, [parkingOne, statusOne]);
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
       <Box width={'full'} height={'full'} padding={4}>
@@ -72,6 +74,7 @@ export default function MainScreen() {
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>{storageFreight}</Text>
                 <Button
+                  backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
                     setStorageFreight(
@@ -87,6 +90,7 @@ export default function MainScreen() {
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
+                  backgroundColor={'red.700'}
                   onPress={() => {
                     setStorageFreight(storageFreight + 1);
                     setAutonomousScore(autonomousScore + 2);
@@ -100,6 +104,7 @@ export default function MainScreen() {
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>{freightOne}</Text>
                 <Button
+                  backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
                     setFreightOne(freightOne === 0 ? 0 : freightOne - 1);
@@ -111,6 +116,7 @@ export default function MainScreen() {
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
+                  backgroundColor={'red.700'}
                   onPress={() => {
                     setFreightOne(freightOne + 1);
                     setAutonomousScore(autonomousScore + 2);
@@ -124,6 +130,7 @@ export default function MainScreen() {
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>{freightTwo}</Text>
                 <Button
+                  backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
                     setFreightTwo(freightTwo === 0 ? 0 : freightTwo - 1);
@@ -135,6 +142,7 @@ export default function MainScreen() {
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
+                  backgroundColor={'red.700'}
                   onPress={() => {
                     setFreightTwo(freightTwo + 1);
                     setAutonomousScore(autonomousScore + 4);
@@ -149,6 +157,7 @@ export default function MainScreen() {
                 <Text marginRight={'2'}>{freightThree}</Text>
                 <Button
                   marginRight={'2'}
+                  backgroundColor={'red.700'}
                   onPress={() => {
                     setFreightThree(freightThree === 0 ? 0 : freightThree - 1);
                     setAutonomousScore(
@@ -159,6 +168,7 @@ export default function MainScreen() {
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
+                  backgroundColor={'red.700'}
                   onPress={() => {
                     setFreightThree(freightThree + 1);
                     setAutonomousScore(autonomousScore + 6);
@@ -170,28 +180,132 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Parking in">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>None</Button>
-                <Button marginRight={'2'}>Storage</Button>
-                <Button>Warehouse</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    parkingOne === 'none' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingOne('none');
+                  }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    parkingOne === 'storage' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingOne('storage');
+                  }}
+                >
+                  Storage
+                </Button>
+                <Button
+                  backgroundColor={
+                    parkingOne === 'warehouse' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingOne('warehouse');
+                  }}
+                >
+                  Warehouse
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Parking status">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>Partially</Button>
-                <Button>Full</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    statusOne === 'partially' && parkingOne !== 'none'
+                      ? 'red.500'
+                      : 'red.700'
+                  }
+                  onPress={() => {
+                    setStatusOne('partially');
+                  }}
+                >
+                  Partially
+                </Button>
+                <Button
+                  backgroundColor={
+                    statusOne === 'fully' && parkingOne !== 'none'
+                      ? 'red.500'
+                      : 'red.700'
+                  }
+                  onPress={() => {
+                    setStatusOne('fully');
+                  }}
+                >
+                  Full
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Parking in">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>None</Button>
-                <Button marginRight={'2'}>Storage</Button>
-                <Button>Warehouse</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    parkingTwo === 'none' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingTwo('none');
+                  }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    parkingTwo === 'storage' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingTwo('storage');
+                  }}
+                >
+                  Storage
+                </Button>
+                <Button
+                  backgroundColor={
+                    parkingTwo === 'warehouse' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    setParkingTwo('warehouse');
+                  }}
+                >
+                  Warehouse
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Parking status">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>Partially</Button>
-                <Button>Full</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    statusTwo === 'partially' && parkingTwo !== 'none'
+                      ? 'red.500'
+                      : 'red.700'
+                  }
+                  onPress={() => {
+                    setStatusTwo('partially');
+                  }}
+                >
+                  Partially
+                </Button>
+                <Button
+                  backgroundColor={
+                    statusTwo === 'fully' && parkingTwo !== 'none'
+                      ? 'red.500'
+                      : 'red.700'
+                  }
+                  onPress={() => {
+                    setStatusTwo('fully');
+                  }}
+                >
+                  Full
+                </Button>
               </Box>
             </InputElement>
 

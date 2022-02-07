@@ -24,10 +24,10 @@ export default function MainScreen() {
   const [totalScore, setTotalScore] = React.useState(0);
 
   const [duckDelivered, setDuckDelivered] = React.useState(false);
-  const [storageFreight, setStorageFreight] = React.useState(0);
-  const [freightOne, setFreightOne] = React.useState(0);
-  const [freightTwo, setFreightTwo] = React.useState(0);
-  const [freightThree, setFreightThree] = React.useState(0);
+  const [autoStorageFreight, setAutoStorageFreight] = React.useState(0);
+  const [autoFreightOne, setAutoFreightOne] = React.useState(0);
+  const [autoFreightTwo, setAutoFreightTwo] = React.useState(0);
+  const [autoFreightThree, setAutoFreightThree] = React.useState(0);
   const [parkingOne, setParkingOne] = React.useState<
     'none' | 'storage' | 'warehouse'
   >('none');
@@ -40,6 +40,12 @@ export default function MainScreen() {
   const [statusTwo, setStatusTwo] = React.useState<
     'partially' | 'fully' | undefined
   >('partially');
+
+  const [teleStorageFreight, setTeleStorageFreight] = React.useState(0);
+  const [teleFreightOne, setTeleFreightOne] = React.useState(0);
+  const [teleFreightTwo, setTeleFreightTwo] = React.useState(0);
+  const [teleFreightThree, setTeleFreightThree] = React.useState(0);
+  const [sharedFreight, setSharedFreight] = React.useState(0);
 
   React.useEffect(() => {}, [parkingOne, statusOne]);
   return (
@@ -72,16 +78,16 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{storageFreight}</Text>
+                <Text marginRight={'2'}>{autoStorageFreight}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
-                    setStorageFreight(
-                      storageFreight === 0 ? 0 : storageFreight - 1
+                    setAutoStorageFreight(
+                      autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
                     );
                     setAutonomousScore(
-                      storageFreight === 0
+                      autoStorageFreight === 0
                         ? autonomousScore
                         : autonomousScore - 2
                     );
@@ -92,7 +98,7 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={'red.700'}
                   onPress={() => {
-                    setStorageFreight(storageFreight + 1);
+                    setAutoStorageFreight(autoStorageFreight + 1);
                     setAutonomousScore(autonomousScore + 2);
                   }}
                 >
@@ -102,14 +108,18 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{freightOne}</Text>
+                <Text marginRight={'2'}>{autoFreightOne}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
-                    setFreightOne(freightOne === 0 ? 0 : freightOne - 1);
+                    setAutoFreightOne(
+                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    );
                     setAutonomousScore(
-                      freightOne === 0 ? autonomousScore : autonomousScore - 2
+                      autoFreightOne === 0
+                        ? autonomousScore
+                        : autonomousScore - 2
                     );
                   }}
                 >
@@ -118,7 +128,7 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={'red.700'}
                   onPress={() => {
-                    setFreightOne(freightOne + 1);
+                    setAutoFreightOne(autoFreightOne + 1);
                     setAutonomousScore(autonomousScore + 2);
                   }}
                 >
@@ -128,14 +138,18 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 2 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{freightTwo}</Text>
+                <Text marginRight={'2'}>{autoFreightTwo}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   marginRight={'2'}
                   onPress={() => {
-                    setFreightTwo(freightTwo === 0 ? 0 : freightTwo - 1);
+                    setAutoFreightTwo(
+                      autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
+                    );
                     setAutonomousScore(
-                      freightTwo === 0 ? autonomousScore : autonomousScore - 4
+                      autoFreightTwo === 0
+                        ? autonomousScore
+                        : autonomousScore - 4
                     );
                   }}
                 >
@@ -144,24 +158,28 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={'red.700'}
                   onPress={() => {
-                    setFreightTwo(freightTwo + 1);
+                    setAutoFreightTwo(autoFreightTwo + 1);
                     setAutonomousScore(autonomousScore + 4);
                   }}
                 >
-                  <AntDesign name="minus" size={18} color="white" />
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 3 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{freightThree}</Text>
+                <Text marginRight={'2'}>{autoFreightThree}</Text>
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
                   onPress={() => {
-                    setFreightThree(freightThree === 0 ? 0 : freightThree - 1);
+                    setAutoFreightThree(
+                      autoFreightThree === 0 ? 0 : autoFreightThree - 1
+                    );
                     setAutonomousScore(
-                      freightThree === 0 ? autonomousScore : autonomousScore - 6
+                      autoFreightThree === 0
+                        ? autonomousScore
+                        : autonomousScore - 6
                     );
                   }}
                 >
@@ -170,11 +188,11 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={'red.700'}
                   onPress={() => {
-                    setFreightThree(freightThree + 1);
+                    setAutoFreightThree(autoFreightThree + 1);
                     setAutonomousScore(autonomousScore + 6);
                   }}
                 >
-                  <AntDesign name="minus" size={18} color="white" />
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -313,58 +331,153 @@ export default function MainScreen() {
               Teleoperated: {teleoperatedScore}
             </Text>
             <Separator />
-            <InputElement text="Storage Freight">
-              <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
-                  <AntDesign name="minus" size={18} color="white" />
-                </Button>
-                <Button>
-                  <AntDesign name="minus" size={18} color="white" />
-                </Button>
-              </Box>
-            </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
+                <Text marginRight={'2'}>{teleFreightOne}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightOne(
+                      teleFreightOne === 0 ? 0 : teleFreightOne - 1
+                    );
+                    setTeleoperatedScore(
+                      teleFreightOne === 0
+                        ? teleoperatedScore
+                        : teleoperatedScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
-                <Button>
-                  <AntDesign name="minus" size={18} color="white" />
+                <Button
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightOne(teleFreightOne + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
+                  }}
+                >
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 2 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
+                <Text marginRight={'2'}>{teleFreightTwo}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightTwo(
+                      teleFreightTwo === 0 ? 0 : teleFreightTwo - 1
+                    );
+                    setTeleoperatedScore(
+                      teleFreightTwo === 0
+                        ? teleoperatedScore
+                        : teleoperatedScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
-                <Button>
-                  <AntDesign name="minus" size={18} color="white" />
+                <Button
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightTwo(teleFreightTwo + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
+                  }}
+                >
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 3 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
+                <Text marginRight={'2'}>{teleFreightThree}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightThree(
+                      teleFreightThree === 0 ? 0 : teleFreightThree - 1
+                    );
+                    setTeleoperatedScore(
+                      teleFreightThree === 0
+                        ? teleoperatedScore
+                        : teleoperatedScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
-                <Button>
+                <Button
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleFreightThree(teleFreightThree + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
+                  }}
+                >
+                  <AntDesign name="plus" size={18} color="white" />
+                </Button>
+              </Box>
+            </InputElement>
+            <InputElement text="Storage Freight">
+              <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
+                <Text marginRight={'2'}>{teleStorageFreight}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleStorageFreight(
+                      teleStorageFreight === 0 ? 0 : teleStorageFreight - 1
+                    );
+                    setTeleoperatedScore(
+                      teleStorageFreight === 0
+                        ? teleoperatedScore
+                        : teleoperatedScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setTeleStorageFreight(teleStorageFreight + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
+                  }}
+                >
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
             <InputElement text="Shared Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
+                <Text marginRight={'2'}>{sharedFreight}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setSharedFreight(
+                      sharedFreight === 0 ? 0 : sharedFreight - 1
+                    );
+                    setTeleoperatedScore(
+                      sharedFreight === 0
+                        ? teleoperatedScore
+                        : teleoperatedScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
-                <Button>
-                  <AntDesign name="minus" size={18} color="white" />
+                <Button
+                  backgroundColor={'red.700'}
+                  onPress={() => {
+                    setSharedFreight(sharedFreight + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
+                  }}
+                >
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>

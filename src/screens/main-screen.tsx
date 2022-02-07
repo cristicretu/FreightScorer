@@ -11,6 +11,7 @@ import {
   VStack
 } from 'native-base';
 
+import { AntDesign } from '@expo/vector-icons';
 import InputElement from '../components/input-element';
 import { Platform } from 'react-native';
 import Separator from '../components/separator';
@@ -79,19 +80,19 @@ export default function MainScreen() {
                     setAutonomousScore(
                       storageFreight === 0
                         ? autonomousScore
-                        : autonomousScore - 1
+                        : autonomousScore - 2
                     );
                   }}
                 >
-                  -
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
                   onPress={() => {
                     setStorageFreight(storageFreight + 1);
-                    setAutonomousScore(autonomousScore + 1);
+                    setAutonomousScore(autonomousScore + 2);
                   }}
                 >
-                  +
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -103,19 +104,19 @@ export default function MainScreen() {
                   onPress={() => {
                     setFreightOne(freightOne === 0 ? 0 : freightOne - 1);
                     setAutonomousScore(
-                      freightOne === 0 ? autonomousScore : autonomousScore - 1
+                      freightOne === 0 ? autonomousScore : autonomousScore - 2
                     );
                   }}
                 >
-                  -
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
                   onPress={() => {
                     setFreightOne(freightOne + 1);
-                    setAutonomousScore(autonomousScore + 1);
+                    setAutonomousScore(autonomousScore + 2);
                   }}
                 >
-                  +
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -127,19 +128,19 @@ export default function MainScreen() {
                   onPress={() => {
                     setFreightTwo(freightTwo === 0 ? 0 : freightTwo - 1);
                     setAutonomousScore(
-                      freightTwo === 0 ? autonomousScore : autonomousScore - 1
+                      freightTwo === 0 ? autonomousScore : autonomousScore - 4
                     );
                   }}
                 >
-                  -
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
                   onPress={() => {
                     setFreightTwo(freightTwo + 1);
-                    setAutonomousScore(autonomousScore + 1);
+                    setAutonomousScore(autonomousScore + 4);
                   }}
                 >
-                  +
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -151,19 +152,19 @@ export default function MainScreen() {
                   onPress={() => {
                     setFreightThree(freightThree === 0 ? 0 : freightThree - 1);
                     setAutonomousScore(
-                      freightThree === 0 ? autonomousScore : autonomousScore - 1
+                      freightThree === 0 ? autonomousScore : autonomousScore - 6
                     );
                   }}
                 >
-                  -
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
                 <Button
                   onPress={() => {
                     setFreightThree(freightThree + 1);
-                    setAutonomousScore(autonomousScore + 1);
+                    setAutonomousScore(autonomousScore + 6);
                   }}
                 >
-                  +
+                  <AntDesign name="minus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -201,36 +202,56 @@ export default function MainScreen() {
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 2 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Level 3 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Shared Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
 
@@ -241,8 +262,12 @@ export default function MainScreen() {
             <InputElement text="Carousel">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>-</Button>
-                <Button>+</Button>
+                <Button marginRight={'2'}>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
+                <Button>
+                  <AntDesign name="minus" size={18} color="white" />
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Balanced Alliance Hub?">

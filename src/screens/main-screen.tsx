@@ -733,7 +733,7 @@ export default function MainScreen() {
                     setTeleoperatedScore(
                       teleFreightOne === 0
                         ? teleoperatedScore
-                        : teleoperatedScore - 6
+                        : teleoperatedScore - 2
                     );
                   }}
                 >
@@ -744,7 +744,7 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightOne(teleFreightOne + 1);
-                    setTeleoperatedScore(teleoperatedScore + 6);
+                    setTeleoperatedScore(teleoperatedScore + 2);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -765,7 +765,7 @@ export default function MainScreen() {
                     setTeleoperatedScore(
                       teleFreightTwo === 0
                         ? teleoperatedScore
-                        : teleoperatedScore - 6
+                        : teleoperatedScore - 4
                     );
                   }}
                 >
@@ -776,7 +776,7 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightTwo(teleFreightTwo + 1);
-                    setTeleoperatedScore(teleoperatedScore + 6);
+                    setTeleoperatedScore(teleoperatedScore + 4);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -829,7 +829,7 @@ export default function MainScreen() {
                     setTeleoperatedScore(
                       teleStorageFreight === 0
                         ? teleoperatedScore
-                        : teleoperatedScore - 6
+                        : teleoperatedScore - 1
                     );
                   }}
                 >
@@ -840,7 +840,7 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleStorageFreight(teleStorageFreight + 1);
-                    setTeleoperatedScore(teleoperatedScore + 6);
+                    setTeleoperatedScore(teleoperatedScore + 1);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -861,7 +861,7 @@ export default function MainScreen() {
                     setTeleoperatedScore(
                       sharedFreight === 0
                         ? teleoperatedScore
-                        : teleoperatedScore - 6
+                        : teleoperatedScore - 4
                     );
                   }}
                 >
@@ -872,7 +872,7 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setSharedFreight(sharedFreight + 1);
-                    setTeleoperatedScore(teleoperatedScore + 6);
+                    setTeleoperatedScore(teleoperatedScore + 4);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />

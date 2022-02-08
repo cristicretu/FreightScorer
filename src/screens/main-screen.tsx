@@ -53,6 +53,17 @@ export default function MainScreen() {
   const [teleFreightThree, setTeleFreightThree] = React.useState(0);
   const [sharedFreight, setSharedFreight] = React.useState(0);
 
+  const [carousel, setCarousel] = React.useState(0);
+  const [balancedAlHub, setBalancedAlHub] = React.useState(false);
+  const [unbalancedShHub, setUnbalancedShHub] = React.useState(false);
+  const [enParkingOne, setEnParkingOne] = React.useState<
+    'none' | 'partially' | 'fully'
+  >('none');
+  const [enParkingTwo, setEnParkingTwo] = React.useState<
+    'none' | 'partially' | 'fully'
+  >('none');
+  const [capped, setCapped] = React.useState<'none' | 'one' | 'two'>('none');
+
   const handleBonusChange = (bonus: 'none' | 'duck' | 'team', nr: 1 | 2) => {
     const currentState = nr === 1 ? bonusOne : bonusTwo;
     if (currentState === bonus) return;
@@ -751,40 +762,171 @@ export default function MainScreen() {
             <Separator />
             <InputElement text="Carousel">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>1</Text>
-                <Button marginRight={'2'}>
+                <Text marginRight={'2'}>{carousel}</Text>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    setCarousel(carousel === 0 ? 0 : carousel - 1);
+                    setEndgameScore(
+                      carousel === 0 ? endgameScore : endgameScore - 6
+                    );
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
-                <Button>
+                <Button
+                  backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    setCarousel(carousel + 1);
+                    setEndgameScore(endgameScore + 6);
+                  }}
+                >
                   <AntDesign name="minus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
             <InputElement text="Balanced Alliance Hub?">
-              <Switch></Switch>
+              <Switch
+                onTrackColor={'red.600'}
+                onThumbColor={'red.600'}
+                onValueChange={() => {
+                  if (balancedAlHub === false) {
+                    setBalancedAlHub(true);
+                    setEndgameScore(endgameScore + 10);
+                  } else {
+                    setBalancedAlHub(false);
+                    setEndgameScore(endgameScore - 10);
+                  }
+                }}
+              ></Switch>
             </InputElement>
             <InputElement text="Unbalanced Shared Hub?">
-              <Switch></Switch>
+              <Switch
+                onTrackColor={'red.600'}
+                onThumbColor={'red.600'}
+                onValueChange={() => {
+                  if (unbalancedShHub === false) {
+                    setUnbalancedShHub(true);
+                    setEndgameScore(endgameScore + 10);
+                  } else {
+                    setUnbalancedShHub(false);
+                    setEndgameScore(endgameScore - 10);
+                  }
+                }}
+              ></Switch>
             </InputElement>
             <InputElement text="Parked 1">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>None</Button>
-                <Button marginRight={'2'}>Partially</Button>
-                <Button>Fully</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    enParkingOne === 'none' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    enParkingOne === 'partially' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Partially
+                </Button>
+                <Button
+                  backgroundColor={
+                    enParkingOne === 'fully' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Fully
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Parked 2">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>None</Button>
-                <Button marginRight={'2'}>Partially</Button>
-                <Button>Fully</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    enParkingTwo === 'none' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={
+                    enParkingTwo === 'partially' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Partially
+                </Button>
+                <Button
+                  backgroundColor={
+                    enParkingTwo === 'fully' ? 'red.500' : 'red.700'
+                  }
+                  onPress={() => {
+                    handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Fully
+                </Button>
               </Box>
             </InputElement>
             <InputElement text="Capped Elements">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Button marginRight={'2'}>None</Button>
-                <Button marginRight={'2'}>One</Button>
-                <Button>Two</Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={capped === 'none' ? 'red.500' : 'red.700'}
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={capped === 'one' ? 'red.500' : 'red.700'}
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  One
+                </Button>
+                <Button
+                  backgroundColor={capped === 'two' ? 'red.500' : 'red.700'}
+                  onPress={() => {
+                    // handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Two
+                </Button>
               </Box>
             </InputElement>
 

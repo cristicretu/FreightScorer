@@ -47,7 +47,63 @@ export default function MainScreen() {
   const [teleFreightThree, setTeleFreightThree] = React.useState(0);
   const [sharedFreight, setSharedFreight] = React.useState(0);
 
-  React.useEffect(() => {}, [parkingOne, statusOne]);
+  const handleParkingChange1 = (value: 'none' | 'storage' | 'warehouse') => {
+    const currentState = parkingOne;
+    if (currentState === value) {
+      return;
+    }
+
+    const isPartial: number = statusOne === 'partially' ? 1 : 0;
+    const isFull = statusOne === 'fully' ? 2 : 0;
+
+    if (currentState === 'none') {
+      if (value === 'storage') {
+        setParkingOne('storage');
+        setAutonomousScore(autonomousScore + 3 * isPartial + 3 * isFull);
+      } else if (value === 'warehouse') {
+        setParkingOne('warehouse');
+        setAutonomousScore(autonomousScore + 5 * isPartial + 5 * isFull);
+      }
+    }
+
+    if (currentState === 'storage') {
+      if (value === 'none') {
+        setParkingOne('none');
+        setAutonomousScore(autonomousScore - 3 * isPartial - 3 * isFull);
+      } else if (value === 'warehouse') {
+        setParkingOne('warehouse');
+        setAutonomousScore(autonomousScore + 2 * isPartial + 2 * isFull);
+      }
+    }
+
+    if (currentState === 'warehouse') {
+      if (value === 'none') {
+        setParkingOne('none');
+        setAutonomousScore(autonomousScore - 5 * isPartial - 5 * isFull);
+      } else if (value === 'storage') {
+        setParkingOne('storage');
+        setAutonomousScore(autonomousScore - 2 * isPartial - 2 * isFull);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    if (statusOne === 'partially') {
+      if (parkingOne === 'storage') {
+        setAutonomousScore(autonomousScore - 3);
+      } else if (parkingOne === 'warehouse') {
+        setAutonomousScore(autonomousScore - 5);
+      }
+    } else if (statusOne === 'fully') {
+      if (parkingOne === 'storage') {
+        setAutonomousScore(autonomousScore + 3);
+        console.log('mai adaugat 3');
+      } else if (parkingOne === 'warehouse') {
+        setAutonomousScore(autonomousScore + 5);
+      }
+    }
+  }, [statusOne]);
+
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
       <Box width={'full'} height={'full'} padding={4}>
@@ -203,9 +259,7 @@ export default function MainScreen() {
                   backgroundColor={
                     parkingOne === 'none' ? 'red.500' : 'red.700'
                   }
-                  onPress={() => {
-                    setParkingOne('none');
-                  }}
+                  onPress={() => handleParkingChange1('none')}
                 >
                   None
                 </Button>
@@ -215,7 +269,7 @@ export default function MainScreen() {
                     parkingOne === 'storage' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    setParkingOne('storage');
+                    handleParkingChange1('storage');
                   }}
                 >
                   Storage
@@ -225,7 +279,7 @@ export default function MainScreen() {
                     parkingOne === 'warehouse' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    setParkingOne('warehouse');
+                    handleParkingChange1('warehouse');
                   }}
                 >
                   Warehouse
@@ -242,7 +296,9 @@ export default function MainScreen() {
                       : 'red.700'
                   }
                   onPress={() => {
-                    setStatusOne('partially');
+                    if (parkingOne !== 'none') {
+                      setStatusOne('partially');
+                    }
                   }}
                 >
                   Partially
@@ -254,7 +310,7 @@ export default function MainScreen() {
                       : 'red.700'
                   }
                   onPress={() => {
-                    setStatusOne('fully');
+                    if (parkingOne !== 'none') setStatusOne('fully');
                   }}
                 >
                   Full

@@ -119,6 +119,94 @@ export default function MainScreen() {
     }
   };
 
+  const handleCappedChange = (value: 'none' | 'one' | 'two') => {
+    const currentState = capped;
+
+    if (currentState === 'none') {
+      if (value === 'one') {
+        setCapped('one');
+        setEndgameScore(endgameScore + 10);
+      } else if (value === 'two') {
+        setCapped('two');
+        setEndgameScore(endgameScore + 20);
+      }
+    } else if (currentState === 'one') {
+      if (value === 'none') {
+        setCapped('none');
+        setEndgameScore(endgameScore - 10);
+      } else if (value === 'two') {
+        setCapped('two');
+        setEndgameScore(endgameScore + 10);
+      }
+    } else if (currentState === 'two') {
+      if (value === 'none') {
+        setCapped('none');
+        setEndgameScore(endgameScore - 20);
+      } else if (value === 'one') {
+        setCapped('one');
+        setEndgameScore(endgameScore - 10);
+      }
+    }
+  };
+
+  const handleEndgameParkingChange = (
+    value: 'none' | 'partially' | 'fully',
+    nr: 1 | 2
+  ) => {
+    const currentState = nr === 1 ? enParkingOne : enParkingTwo;
+    if (currentState === value) return;
+
+    if (currentState === 'none') {
+      if (value === 'partially') {
+        if (nr === 1) {
+          setEnParkingOne('partially');
+        } else {
+          setEnParkingTwo('partially');
+        }
+        setEndgameScore(endgameScore + 10);
+      } else if (value === 'fully') {
+        if (nr === 1) {
+          setEnParkingOne('fully');
+        } else {
+          setEnParkingTwo('fully');
+        }
+        setEndgameScore(endgameScore + 20);
+      }
+    } else if (currentState === 'partially') {
+      if (value === 'none') {
+        if (nr === 1) {
+          setEnParkingOne('none');
+        } else {
+          setEnParkingTwo('none');
+        }
+        setEndgameScore(endgameScore - 10);
+      } else if (value === 'fully') {
+        if (nr === 1) {
+          setEnParkingOne('fully');
+        } else {
+          setEnParkingTwo('fully');
+        }
+        setEndgameScore(endgameScore + 10);
+      }
+    } else if (currentState === 'fully') {
+      if (value === 'none') {
+        if (nr === 1) {
+          setEnParkingOne('none');
+        } else {
+          setEnParkingTwo('none');
+        }
+        setEndgameScore(endgameScore - 20);
+      } else if (value === 'partially') {
+        if (nr === 1) {
+          setEnParkingOne('partially');
+        } else {
+          setEnParkingTwo('partially');
+        }
+        setEndgameScore(endgameScore - 10);
+      }
+    }
+  };
+
   const handleParkingChange = (
     value: 'none' | 'storage' | 'warehouse',
     nr: 1 | 2
@@ -213,6 +301,10 @@ export default function MainScreen() {
       }
     }
   }, [statusTwo]);
+
+  React.useEffect(() => {
+    setTotalScore(autonomousScore + teleoperatedScore + endgameScore);
+  }, [autonomousScore, teleoperatedScore, endgameScore]);
 
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
@@ -784,7 +876,7 @@ export default function MainScreen() {
                     setEndgameScore(endgameScore + 6);
                   }}
                 >
-                  <AntDesign name="minus" size={18} color="white" />
+                  <AntDesign name="plus" size={18} color="white" />
                 </Button>
               </Box>
             </InputElement>
@@ -826,7 +918,7 @@ export default function MainScreen() {
                     enParkingOne === 'none' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleEndgameParkingChange('none', 1);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -838,7 +930,7 @@ export default function MainScreen() {
                     enParkingOne === 'partially' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleEndgameParkingChange('partially', 1);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -849,7 +941,7 @@ export default function MainScreen() {
                     enParkingOne === 'fully' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleEndgameParkingChange('fully', 1);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -865,7 +957,7 @@ export default function MainScreen() {
                     enParkingTwo === 'none' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleEndgameParkingChange('none', 2);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -877,7 +969,7 @@ export default function MainScreen() {
                     enParkingTwo === 'partially' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleBonusChange('team', 1);
+                    handleEndgameParkingChange('partially', 2);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -888,7 +980,7 @@ export default function MainScreen() {
                     enParkingTwo === 'fully' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleBonusChange('team', 1);
+                    handleEndgameParkingChange('fully', 2);
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -902,7 +994,7 @@ export default function MainScreen() {
                   marginRight={'2'}
                   backgroundColor={capped === 'none' ? 'red.500' : 'red.700'}
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleCappedChange('none');
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -912,7 +1004,7 @@ export default function MainScreen() {
                   marginRight={'2'}
                   backgroundColor={capped === 'one' ? 'red.500' : 'red.700'}
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleCappedChange('one');
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >
@@ -921,7 +1013,7 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={capped === 'two' ? 'red.500' : 'red.700'}
                   onPress={() => {
-                    // handleBonusChange('team', 1);
+                    handleCappedChange('two');
                   }}
                   _pressed={{ backgroundColor: 'red.600' }}
                 >

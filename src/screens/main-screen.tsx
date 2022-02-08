@@ -47,41 +47,64 @@ export default function MainScreen() {
   const [teleFreightThree, setTeleFreightThree] = React.useState(0);
   const [sharedFreight, setSharedFreight] = React.useState(0);
 
-  const handleParkingChange1 = (value: 'none' | 'storage' | 'warehouse') => {
-    const currentState = parkingOne;
+  const handleParkingChange = (
+    value: 'none' | 'storage' | 'warehouse',
+    nr: 1 | 2
+  ) => {
+    const currentState = nr === 1 ? parkingOne : parkingTwo;
     if (currentState === value) {
       return;
     }
 
-    const isPartial: number = statusOne === 'partially' ? 1 : 0;
-    const isFull = statusOne === 'fully' ? 2 : 0;
+    const isPartial: number =
+      nr === 1
+        ? statusOne === 'partially'
+          ? 1
+          : 0
+        : statusTwo === 'partially'
+        ? 1
+        : 0;
+    const isFull =
+      nr === 1
+        ? statusOne === 'fully'
+          ? 2
+          : 0
+        : statusTwo === 'fully'
+        ? 2
+        : 0;
 
     if (currentState === 'none') {
       if (value === 'storage') {
-        setParkingOne('storage');
+        if (nr === 1) setParkingOne('storage');
+        else setParkingTwo('storage');
         setAutonomousScore(autonomousScore + 3 * isPartial + 3 * isFull);
       } else if (value === 'warehouse') {
-        setParkingOne('warehouse');
+        if (nr === 1) setParkingOne('warehouse');
+        else setParkingTwo('warehouse');
         setAutonomousScore(autonomousScore + 5 * isPartial + 5 * isFull);
       }
     }
 
     if (currentState === 'storage') {
       if (value === 'none') {
-        setParkingOne('none');
+        if (nr === 1) setParkingOne('none');
+        else setParkingTwo('none');
         setAutonomousScore(autonomousScore - 3 * isPartial - 3 * isFull);
       } else if (value === 'warehouse') {
-        setParkingOne('warehouse');
+        if (nr === 1) setParkingOne('warehouse');
+        else setParkingTwo('warehouse');
         setAutonomousScore(autonomousScore + 2 * isPartial + 2 * isFull);
       }
     }
 
     if (currentState === 'warehouse') {
       if (value === 'none') {
-        setParkingOne('none');
+        if (nr === 1) setParkingOne('none');
+        else setParkingTwo('none');
         setAutonomousScore(autonomousScore - 5 * isPartial - 5 * isFull);
       } else if (value === 'storage') {
-        setParkingOne('storage');
+        if (nr === 1) setParkingOne('storage');
+        else setParkingTwo('storage');
         setAutonomousScore(autonomousScore - 2 * isPartial - 2 * isFull);
       }
     }
@@ -97,12 +120,27 @@ export default function MainScreen() {
     } else if (statusOne === 'fully') {
       if (parkingOne === 'storage') {
         setAutonomousScore(autonomousScore + 3);
-        console.log('mai adaugat 3');
       } else if (parkingOne === 'warehouse') {
         setAutonomousScore(autonomousScore + 5);
       }
     }
   }, [statusOne]);
+
+  React.useEffect(() => {
+    if (statusTwo === 'partially') {
+      if (parkingTwo === 'storage') {
+        setAutonomousScore(autonomousScore - 3);
+      } else if (parkingTwo === 'warehouse') {
+        setAutonomousScore(autonomousScore - 5);
+      }
+    } else if (statusTwo === 'fully') {
+      if (parkingTwo === 'storage') {
+        setAutonomousScore(autonomousScore + 3);
+      } else if (parkingTwo === 'warehouse') {
+        setAutonomousScore(autonomousScore + 5);
+      }
+    }
+  }, [statusTwo]);
 
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
@@ -259,7 +297,7 @@ export default function MainScreen() {
                   backgroundColor={
                     parkingOne === 'none' ? 'red.500' : 'red.700'
                   }
-                  onPress={() => handleParkingChange1('none')}
+                  onPress={() => handleParkingChange('none', 1)}
                 >
                   None
                 </Button>
@@ -269,7 +307,7 @@ export default function MainScreen() {
                     parkingOne === 'storage' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleParkingChange1('storage');
+                    handleParkingChange('storage', 1);
                   }}
                 >
                   Storage
@@ -279,7 +317,7 @@ export default function MainScreen() {
                     parkingOne === 'warehouse' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleParkingChange1('warehouse');
+                    handleParkingChange('warehouse', 1);
                   }}
                 >
                   Warehouse
@@ -325,7 +363,7 @@ export default function MainScreen() {
                     parkingTwo === 'none' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    setParkingTwo('none');
+                    handleParkingChange('none', 2);
                   }}
                 >
                   None
@@ -336,7 +374,7 @@ export default function MainScreen() {
                     parkingTwo === 'storage' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    setParkingTwo('storage');
+                    handleParkingChange('storage', 2);
                   }}
                 >
                   Storage
@@ -346,7 +384,7 @@ export default function MainScreen() {
                     parkingTwo === 'warehouse' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    setParkingTwo('warehouse');
+                    handleParkingChange('warehouse', 2);
                   }}
                 >
                   Warehouse
@@ -363,7 +401,9 @@ export default function MainScreen() {
                       : 'red.700'
                   }
                   onPress={() => {
-                    setStatusTwo('partially');
+                    if (parkingTwo !== 'none') {
+                      setStatusTwo('partially');
+                    }
                   }}
                 >
                   Partially
@@ -375,7 +415,7 @@ export default function MainScreen() {
                       : 'red.700'
                   }
                   onPress={() => {
-                    setStatusTwo('fully');
+                    if (parkingTwo !== 'none') setStatusTwo('fully');
                   }}
                 >
                   Full

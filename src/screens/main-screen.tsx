@@ -8,6 +8,7 @@ import {
   ScrollView,
   Switch,
   Text,
+  useColorModeValue,
   VStack
 } from 'native-base';
 
@@ -1061,7 +1062,21 @@ export default function MainScreen() {
             <InputElement text="Autonomous">{autonomousScore}</InputElement>
             <InputElement text="Teleoperated">{teleoperatedScore}</InputElement>
             <InputElement text="End game">{endgameScore}</InputElement>
-            <InputElement text="Total">{totalScore}</InputElement>
+            <Box
+              display={'flex'}
+              justifyContent={'space-between'}
+              flexDir={'row'}
+              bg={'red.700'}
+              padding={2}
+              alignItems={'center'}
+            >
+              <Text fontSize={'2xl'} color={'white'}>
+                Total
+              </Text>
+              <Text fontSize={'2xl'} color={'white'}>
+                {totalScore}
+              </Text>
+            </Box>
           </VStack>
         </ScrollView>
       </Box>

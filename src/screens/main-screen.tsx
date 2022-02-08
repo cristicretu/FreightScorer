@@ -142,6 +142,8 @@ export default function MainScreen() {
     }
   }, [statusTwo]);
 
+  //team duck none
+
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
       <Box width={'full'} height={'full'} padding={4}>
@@ -168,7 +170,19 @@ export default function MainScreen() {
             </Text>
             <Separator />
             <InputElement text="Duck delivered">
-              <Switch></Switch>
+              <Switch
+                onTrackColor={'red.600'}
+                onThumbColor={'red.600'}
+                onValueChange={() => {
+                  if (duckDelivered === false) {
+                    setDuckDelivered(true);
+                    setAutonomousScore(autonomousScore + 10);
+                  } else {
+                    setDuckDelivered(false);
+                    setAutonomousScore(autonomousScore - 10);
+                  }
+                }}
+              ></Switch>
             </InputElement>
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
@@ -176,6 +190,7 @@ export default function MainScreen() {
                 <Button
                   backgroundColor={'red.700'}
                   marginRight={'2'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoStorageFreight(
                       autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
@@ -191,6 +206,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoStorageFreight(autoStorageFreight + 1);
                     setAutonomousScore(autonomousScore + 2);
@@ -205,6 +221,7 @@ export default function MainScreen() {
                 <Text marginRight={'2'}>{autoFreightOne}</Text>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   marginRight={'2'}
                   onPress={() => {
                     setAutoFreightOne(
@@ -221,6 +238,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightOne(autoFreightOne + 1);
                     setAutonomousScore(autonomousScore + 2);
@@ -235,6 +253,7 @@ export default function MainScreen() {
                 <Text marginRight={'2'}>{autoFreightTwo}</Text>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   marginRight={'2'}
                   onPress={() => {
                     setAutoFreightTwo(
@@ -251,6 +270,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightTwo(autoFreightTwo + 1);
                     setAutonomousScore(autonomousScore + 4);
@@ -266,6 +286,7 @@ export default function MainScreen() {
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightThree(
                       autoFreightThree === 0 ? 0 : autoFreightThree - 1
@@ -281,6 +302,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightThree(autoFreightThree + 1);
                     setAutonomousScore(autonomousScore + 6);
@@ -294,6 +316,7 @@ export default function MainScreen() {
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Button
                   marginRight={'2'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
                     parkingOne === 'none' ? 'red.500' : 'red.700'
                   }
@@ -303,6 +326,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   marginRight={'2'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
                     parkingOne === 'storage' ? 'red.500' : 'red.700'
                   }
@@ -316,6 +340,7 @@ export default function MainScreen() {
                   backgroundColor={
                     parkingOne === 'warehouse' ? 'red.500' : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     handleParkingChange('warehouse', 1);
                   }}
@@ -328,6 +353,7 @@ export default function MainScreen() {
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
                 <Button
                   marginRight={'2'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
                     statusOne === 'partially' && parkingOne !== 'none'
                       ? 'red.500'
@@ -347,6 +373,7 @@ export default function MainScreen() {
                       ? 'red.500'
                       : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     if (parkingOne !== 'none') setStatusOne('fully');
                   }}
@@ -362,6 +389,7 @@ export default function MainScreen() {
                   backgroundColor={
                     parkingTwo === 'none' ? 'red.500' : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     handleParkingChange('none', 2);
                   }}
@@ -373,6 +401,7 @@ export default function MainScreen() {
                   backgroundColor={
                     parkingTwo === 'storage' ? 'red.500' : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     handleParkingChange('storage', 2);
                   }}
@@ -386,6 +415,7 @@ export default function MainScreen() {
                   onPress={() => {
                     handleParkingChange('warehouse', 2);
                   }}
+                  _pressed={{ backgroundColor: 'red.600' }}
                 >
                   Warehouse
                 </Button>
@@ -400,6 +430,7 @@ export default function MainScreen() {
                       ? 'red.500'
                       : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     if (parkingTwo !== 'none') {
                       setStatusTwo('partially');
@@ -414,6 +445,7 @@ export default function MainScreen() {
                       ? 'red.500'
                       : 'red.700'
                   }
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     if (parkingTwo !== 'none') setStatusTwo('fully');
                   }}
@@ -433,6 +465,7 @@ export default function MainScreen() {
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightOne(
                       teleFreightOne === 0 ? 0 : teleFreightOne - 1
@@ -448,6 +481,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightOne(teleFreightOne + 1);
                     setTeleoperatedScore(teleoperatedScore + 6);
@@ -462,6 +496,7 @@ export default function MainScreen() {
                 <Text marginRight={'2'}>{teleFreightTwo}</Text>
                 <Button
                   marginRight={'2'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={'red.700'}
                   onPress={() => {
                     setTeleFreightTwo(
@@ -478,6 +513,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightTwo(teleFreightTwo + 1);
                     setTeleoperatedScore(teleoperatedScore + 6);
@@ -493,6 +529,7 @@ export default function MainScreen() {
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightThree(
                       teleFreightThree === 0 ? 0 : teleFreightThree - 1
@@ -508,6 +545,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleFreightThree(teleFreightThree + 1);
                     setTeleoperatedScore(teleoperatedScore + 6);
@@ -523,6 +561,7 @@ export default function MainScreen() {
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleStorageFreight(
                       teleStorageFreight === 0 ? 0 : teleStorageFreight - 1
@@ -538,6 +577,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setTeleStorageFreight(teleStorageFreight + 1);
                     setTeleoperatedScore(teleoperatedScore + 6);
@@ -553,6 +593,7 @@ export default function MainScreen() {
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setSharedFreight(
                       sharedFreight === 0 ? 0 : sharedFreight - 1
@@ -568,6 +609,7 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setSharedFreight(sharedFreight + 1);
                     setTeleoperatedScore(teleoperatedScore + 6);

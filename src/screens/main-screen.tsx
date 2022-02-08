@@ -40,12 +40,73 @@ export default function MainScreen() {
   const [statusTwo, setStatusTwo] = React.useState<
     'partially' | 'fully' | undefined
   >('partially');
+  const [bonusOne, setBonusOne] = React.useState<'none' | 'duck' | 'team'>(
+    'none'
+  );
+  const [bonusTwo, setBonusTwo] = React.useState<'none' | 'duck' | 'team'>(
+    'none'
+  );
 
   const [teleStorageFreight, setTeleStorageFreight] = React.useState(0);
   const [teleFreightOne, setTeleFreightOne] = React.useState(0);
   const [teleFreightTwo, setTeleFreightTwo] = React.useState(0);
   const [teleFreightThree, setTeleFreightThree] = React.useState(0);
   const [sharedFreight, setSharedFreight] = React.useState(0);
+
+  const handleBonusChange = (bonus: 'none' | 'duck' | 'team', nr: 1 | 2) => {
+    const currentState = nr === 1 ? bonusOne : bonusTwo;
+    if (currentState === bonus) return;
+
+    if (currentState === 'none') {
+      if (bonus === 'duck') {
+        if (nr === 1) {
+          setBonusOne('duck');
+        } else {
+          setBonusTwo('duck');
+        }
+        setAutonomousScore(autonomousScore + 10);
+      } else if (bonus === 'team') {
+        if (nr === 1) {
+          setBonusOne('team');
+        } else {
+          setBonusTwo('team');
+        }
+        setAutonomousScore(autonomousScore + 20);
+      }
+    } else if (currentState === 'duck') {
+      if (bonus === 'none') {
+        if (nr === 1) {
+          setBonusOne('none');
+        } else {
+          setBonusTwo('none');
+        }
+        setAutonomousScore(autonomousScore - 10);
+      } else if (bonus === 'team') {
+        if (nr === 1) {
+          setBonusOne('team');
+        } else {
+          setBonusTwo('team');
+        }
+        setAutonomousScore(autonomousScore + 10);
+      }
+    } else if (currentState === 'team') {
+      if (bonus === 'none') {
+        if (nr === 1) {
+          setBonusOne('none');
+        } else {
+          setBonusTwo('none');
+        }
+        setAutonomousScore(autonomousScore - 20);
+      } else if (bonus === 'duck') {
+        if (nr === 1) {
+          setBonusOne('duck');
+        } else {
+          setBonusTwo('duck');
+        }
+        setAutonomousScore(autonomousScore - 10);
+      }
+    }
+  };
 
   const handleParkingChange = (
     value: 'none' | 'storage' | 'warehouse',
@@ -141,8 +202,6 @@ export default function MainScreen() {
       }
     }
   }, [statusTwo]);
-
-  //team duck none
 
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
@@ -451,6 +510,72 @@ export default function MainScreen() {
                   }}
                 >
                   Full
+                </Button>
+              </Box>
+            </InputElement>
+            <InputElement text="Bonus">
+              <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={bonusOne === 'none' ? 'red.500' : 'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    handleBonusChange('none', 1);
+                  }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={bonusOne === 'duck' ? 'red.500' : 'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    handleBonusChange('duck', 1);
+                  }}
+                >
+                  Duck
+                </Button>
+                <Button
+                  backgroundColor={bonusOne === 'team' ? 'red.500' : 'red.700'}
+                  onPress={() => {
+                    handleBonusChange('team', 1);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Team
+                </Button>
+              </Box>
+            </InputElement>
+            <InputElement text="Bonus">
+              <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={bonusTwo === 'none' ? 'red.500' : 'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    handleBonusChange('none', 2);
+                  }}
+                >
+                  None
+                </Button>
+                <Button
+                  marginRight={'2'}
+                  backgroundColor={bonusTwo === 'duck' ? 'red.500' : 'red.700'}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                  onPress={() => {
+                    handleBonusChange('duck', 2);
+                  }}
+                >
+                  Duck
+                </Button>
+                <Button
+                  backgroundColor={bonusTwo === 'team' ? 'red.500' : 'red.700'}
+                  onPress={() => {
+                    handleBonusChange('team', 2);
+                  }}
+                  _pressed={{ backgroundColor: 'red.600' }}
+                >
+                  Team
                 </Button>
               </Box>
             </InputElement>

@@ -125,26 +125,26 @@ export default function MainScreen() {
     if (currentState === 'none') {
       if (value === 'one') {
         setCapped('one');
-        setEndgameScore(endgameScore + 10);
+        setEndgameScore(endgameScore + 15);
       } else if (value === 'two') {
         setCapped('two');
-        setEndgameScore(endgameScore + 20);
+        setEndgameScore(endgameScore + 30);
       }
     } else if (currentState === 'one') {
       if (value === 'none') {
         setCapped('none');
-        setEndgameScore(endgameScore - 10);
+        setEndgameScore(endgameScore - 15);
       } else if (value === 'two') {
         setCapped('two');
-        setEndgameScore(endgameScore + 10);
+        setEndgameScore(endgameScore + 15);
       }
     } else if (currentState === 'two') {
       if (value === 'none') {
         setCapped('none');
-        setEndgameScore(endgameScore - 20);
+        setEndgameScore(endgameScore - 30);
       } else if (value === 'one') {
         setCapped('one');
-        setEndgameScore(endgameScore - 10);
+        setEndgameScore(endgameScore - 15);
       }
     }
   };
@@ -163,14 +163,14 @@ export default function MainScreen() {
         } else {
           setEnParkingTwo('partially');
         }
-        setEndgameScore(endgameScore + 10);
+        setEndgameScore(endgameScore + 3);
       } else if (value === 'fully') {
         if (nr === 1) {
           setEnParkingOne('fully');
         } else {
           setEnParkingTwo('fully');
         }
-        setEndgameScore(endgameScore + 20);
+        setEndgameScore(endgameScore + 6);
       }
     } else if (currentState === 'partially') {
       if (value === 'none') {
@@ -179,14 +179,14 @@ export default function MainScreen() {
         } else {
           setEnParkingTwo('none');
         }
-        setEndgameScore(endgameScore - 10);
+        setEndgameScore(endgameScore - 3);
       } else if (value === 'fully') {
         if (nr === 1) {
           setEnParkingOne('fully');
         } else {
           setEnParkingTwo('fully');
         }
-        setEndgameScore(endgameScore + 10);
+        setEndgameScore(endgameScore + 3);
       }
     } else if (currentState === 'fully') {
       if (value === 'none') {
@@ -195,14 +195,14 @@ export default function MainScreen() {
         } else {
           setEnParkingTwo('none');
         }
-        setEndgameScore(endgameScore - 20);
+        setEndgameScore(endgameScore - 6);
       } else if (value === 'partially') {
         if (nr === 1) {
           setEnParkingOne('partially');
         } else {
           setEnParkingTwo('partially');
         }
-        setEndgameScore(endgameScore - 10);
+        setEndgameScore(endgameScore - 3);
       }
     }
   };
@@ -934,10 +934,10 @@ export default function MainScreen() {
                 onValueChange={() => {
                   if (unbalancedShHub === false) {
                     setUnbalancedShHub(true);
-                    setEndgameScore(endgameScore + 10);
+                    setEndgameScore(endgameScore + 20);
                   } else {
                     setUnbalancedShHub(false);
-                    setEndgameScore(endgameScore - 10);
+                    setEndgameScore(endgameScore - 20);
                   }
                 }}
               ></Switch>

@@ -357,6 +357,12 @@ export default function MainScreen() {
                     setAutoStorageFreight(
                       autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
                     );
+                    setTeleStorageFreight(
+                      autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
+                    );
+                    setTeleoperatedScore(
+                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 1
+                    );
                     setAutonomousScore(
                       autoStorageFreight === 0
                         ? autonomousScore
@@ -371,6 +377,8 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoStorageFreight(autoStorageFreight + 1);
+                    setTeleStorageFreight(autoStorageFreight + 1);
+                    setTeleoperatedScore(teleoperatedScore + 1);
                     setAutonomousScore(autonomousScore + 2);
                   }}
                 >
@@ -389,6 +397,12 @@ export default function MainScreen() {
                     setAutoFreightOne(
                       autoFreightOne === 0 ? 0 : autoFreightOne - 1
                     );
+                    setTeleFreightOne(
+                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    );
+                    setTeleoperatedScore(
+                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 2
+                    );
                     setAutonomousScore(
                       autoFreightOne === 0
                         ? autonomousScore
@@ -403,6 +417,8 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightOne(autoFreightOne + 1);
+                    setTeleFreightOne(autoFreightOne + 1);
+                    setTeleoperatedScore(teleoperatedScore + 2);
                     setAutonomousScore(autonomousScore + 2);
                   }}
                 >
@@ -421,6 +437,12 @@ export default function MainScreen() {
                     setAutoFreightTwo(
                       autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
                     );
+                    setTeleFreightTwo(
+                      autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
+                    );
+                    setTeleoperatedScore(
+                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 4
+                    );
                     setAutonomousScore(
                       autoFreightTwo === 0
                         ? autonomousScore
@@ -435,6 +457,8 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightTwo(autoFreightTwo + 1);
+                    setTeleFreightTwo(autoFreightTwo + 1);
+                    setTeleoperatedScore(teleoperatedScore + 4);
                     setAutonomousScore(autonomousScore + 4);
                   }}
                 >
@@ -453,6 +477,12 @@ export default function MainScreen() {
                     setAutoFreightThree(
                       autoFreightThree === 0 ? 0 : autoFreightThree - 1
                     );
+                    setTeleFreightThree(
+                      autoFreightThree === 0 ? 0 : autoFreightThree - 1
+                    );
+                    setTeleoperatedScore(
+                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 6
+                    );
                     setAutonomousScore(
                       autoFreightThree === 0
                         ? autonomousScore
@@ -467,6 +497,8 @@ export default function MainScreen() {
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
                     setAutoFreightThree(autoFreightThree + 1);
+                    setTeleFreightThree(autoFreightThree + 1);
+                    setTeleoperatedScore(teleoperatedScore + 6);
                     setAutonomousScore(autonomousScore + 6);
                   }}
                 >

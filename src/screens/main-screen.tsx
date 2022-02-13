@@ -16,8 +16,61 @@ import { AntDesign } from '@expo/vector-icons';
 import InputElement from '../components/input-element';
 import { Platform, useColorScheme } from 'react-native';
 import Separator from '../components/separator';
+import { useReducer } from 'react';
+
+function reducer(state: any, action: any) {
+  switch (action.type) {
+    case 'AUTO_FREIGHT_ONE_DECREMENT':
+      return {
+        ...state,
+        autoFreightOne: state.autoFreightOne - 1,
+        totalScore: state.totalScore - 1
+      };
+    case 'AUTO_FREIGHT_ONE_INCREMENT':
+      return {
+        ...state,
+        autoFreightOne: state.autoFreightOne + 1,
+        totalScore: state.totalScore + 40
+      };
+    case 'AUTO_PARKING_ONE_STORAGE':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload + 69,
+        autoParkingOne: 'storage'
+      };
+    case 'AUTO_PARKING_ONE_NONE':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload,
+        autoParkingOne: 'none'
+      };
+    case 'AUTO_PARKING_ONE_WAREHOUSE':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload + 420,
+        autoParkingOne: 'warehouse'
+      };
+
+    default:
+      return state;
+  }
+}
 
 export default function MainScreen() {
+  const [state, dispatch] = useReducer(reducer, {
+    totalScore: 0,
+    duckDelivered: false,
+    autoStorageFreight: 0,
+    autoFreightOne: 0,
+    autoFreightTwo: 0,
+    autoFreightThree: 0,
+    autoParkingOne: 'none',
+    autoParkingTwo: 'none',
+    autoStatusOne: 'partially',
+    autoStatusTwo: 'partially',
+    autoBonusOne: 'none',
+    autoBonusTwo: 'none'
+  });
   const [autonomousScore, setAutonomousScore] = React.useState(0);
   const [teleoperatedScore, setTeleoperatedScore] = React.useState(0);
   const [endgameScore, setEndgameScore] = React.useState(0);
@@ -307,6 +360,19 @@ export default function MainScreen() {
     setTotalScore(autonomousScore + teleoperatedScore + endgameScore);
   }, [autonomousScore, teleoperatedScore, endgameScore]);
 
+  const findScore = (str: string): number => {
+    switch (str) {
+      case 'none':
+        return 0;
+      case 'storage':
+        return 69;
+      case 'warehouse':
+        return 420;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
       <Box width={'full'} height={'full'} padding={4}>
@@ -329,7 +395,7 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              Autonomous: {autonomousScore}
+              Autonomous: {state.totalScore}
             </Text>
             <Separator />
             <InputElement text="Duck delivered">
@@ -389,26 +455,28 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{autoFreightOne}</Text>
+                <Text marginRight={'2'}>{state.autoFreightOne}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   marginRight={'2'}
                   onPress={() => {
-                    setAutoFreightOne(
-                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
-                    );
-                    setTeleFreightOne(
-                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
-                    );
-                    setTeleoperatedScore(
-                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 2
-                    );
-                    setAutonomousScore(
-                      autoFreightOne === 0
-                        ? autonomousScore
-                        : autonomousScore - 2
-                    );
+                    dispatch({ type: 'AUTO_FREIGHT_ONE_DECREMENT' });
+                    // dispatch({ type: 'AUTO_FREIGHT_ONE_DECREMENT' });
+                    // setAutoFreightOne(
+                    //   autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    // );
+                    // setTeleFreightOne(
+                    //   autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    // );
+                    // setTeleoperatedScore(
+                    //   teleoperatedScore === 0 ? 0 : teleoperatedScore - 2
+                    // );
+                    // setAutonomousScore(
+                    //   autoFreightOne === 0
+                    //     ? autonomousScore
+                    //     : autonomousScore - 2
+                    // );
                   }}
                 >
                   <AntDesign name="minus" size={18} color="white" />
@@ -417,10 +485,13 @@ export default function MainScreen() {
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoFreightOne(autoFreightOne + 1);
-                    setTeleFreightOne(autoFreightOne + 1);
-                    setTeleoperatedScore(teleoperatedScore + 2);
-                    setAutonomousScore(autonomousScore + 2);
+                    dispatch({ type: 'AUTO_FREIGHT_ONE_INCREMENT' });
+                    console.log(state.autoFreightOne);
+
+                    // setAutoFreightOne(autoFreightOne + 1);
+                    // setTeleFreightOne(autoFreightOne + 1);
+                    // setTeleoperatedScore(teleoperatedScore + 2);
+                    // setAutonomousScore(autonomousScore + 2);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -513,9 +584,16 @@ export default function MainScreen() {
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
-                    parkingOne === 'none' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'none' ? 'red.500' : 'red.700'
                   }
-                  onPress={() => handleParkingChange('none', 1)}
+                  // onPress={() => handleParkingChange('none', 1)}
+                  onPress={() => {
+                    // dispatch({ type: 'AUTO_PARKING_ONE_CHANGE', payload: 'none' });
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_NONE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+                  }}
                 >
                   None
                 </Button>
@@ -523,21 +601,30 @@ export default function MainScreen() {
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
-                    parkingOne === 'storage' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'storage' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleParkingChange('storage', 1);
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_STORAGE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+                    // handleParkingChange('storage', 1);
                   }}
                 >
-                  Storage
+                  Storagedddd
                 </Button>
                 <Button
                   backgroundColor={
-                    parkingOne === 'warehouse' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'warehouse' ? 'red.500' : 'red.700'
                   }
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    handleParkingChange('warehouse', 1);
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_WAREHOUSE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+
+                    // handleParkingChange('warehouse', 1);
                   }}
                 >
                   Warehouse

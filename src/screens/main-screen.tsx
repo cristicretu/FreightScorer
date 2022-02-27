@@ -16,8 +16,162 @@ import { AntDesign } from '@expo/vector-icons';
 import InputElement from '../components/input-element';
 import { Platform, useColorScheme } from 'react-native';
 import Separator from '../components/separator';
+import { useReducer } from 'react';
+import ThemeToggle from '../components/theme-toggle';
+
+function reducer(state: any, action: any) {
+  const partially = state.autoStatusOne === 'partially' ? 1 : 2;
+  switch (action.type) {
+    case 'AUTO_FREIGHT_ONE_DECREMENT':
+      return {
+        ...state,
+        autoFreightOne: state.autoFreightOne - 1,
+        totalScore: state.totalScore - 6
+      };
+    case 'AUTO_FREIGHT_ONE_INCREMENT':
+      return {
+        ...state,
+        autoFreightOne: state.autoFreightOne + 1,
+        totalScore: state.totalScore + 6
+      };
+    case 'AUTO_FREIGHT_TWO_DECREMENT':
+      return {
+        ...state,
+        autoFreightTwo: state.autoFreightTwo - 1,
+        totalScore: state.totalScore - 6
+      };
+    case 'AUTO_FREIGHT_TWO_INCREMENT':
+      return {
+        ...state,
+        autoFreightTwo: state.autoFreightTwo + 1,
+        totalScore: state.totalScore + 6
+      };
+    case 'AUTO_FREIGHT_THREE_DECREMENT':
+      return {
+        ...state,
+        autoFreightThree: state.autoFreightThree - 1,
+        totalScore: state.totalScore - 6
+      };
+    case 'AUTO_FREIGHT_THREE_INCREMENT':
+      return {
+        ...state,
+        autoFreightThree: state.autoFreightThree + 1,
+        totalScore: state.totalScore + 6
+      };
+    case 'AUTO_STORAGE_FREIGHT_DECREMENT':
+      return {
+        ...state,
+        autoStorageFreight: state.autoStorageFreight - 1,
+        totalScore: state.totalScore - 4
+      };
+    case 'AUTO_STORAGE_FREIGHT_INCREMENT':
+      return {
+        ...state,
+        autoStorageFreight: state.autoStorageFreight + 1,
+        totalScore: state.totalScore + 4
+      };
+
+    case 'AUTO_PARKING_ONE_NONE':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload * partially,
+        autoParkingOne: 'none'
+      };
+    case 'AUTO_PARKING_ONE_STORAGE':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore - action.payload * partially + 3 * partially,
+        autoParkingOne: 'storage'
+      };
+    case 'AUTO_PARKING_ONE_WAREHOUSE':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore - action.payload * partially + 5 * partially,
+        autoParkingOne: 'warehouse'
+      };
+
+    //
+    case 'AUTO_PARKING_TWO_NONE':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload,
+        autoParkingTwo: 'none'
+      };
+    case 'AUTO_PARKING_TWO_STORAGE':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore -
+          action.payload +
+          3 * (state.autoStatusOne === 'partially' ? 1 : 2),
+        autoParkingTwo: 'storage'
+      };
+    case 'AUTO_PARKING_TWO_WAREHOUSE':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore -
+          action.payload +
+          5 * (state.autoStatusOne === 'partially' ? 1 : 2),
+        autoParkingTwo: 'warehouse'
+      };
+
+    case 'AUTO_STATUS_ONE_PARTIALLY':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore -
+          3 * (state.autoParkingOne === 'storage' ? 1 : 0) -
+          5 * (state.autoParkingOne === 'warehouse' ? 1 : 0),
+        autoStatusOne: 'partially'
+      };
+
+    case 'AUTO_STATUS_ONE_FULLY':
+      return {
+        ...state,
+        totalScore:
+          state.totalScore +
+          3 * (state.autoParkingOne === 'storage' ? 1 : 0) +
+          5 * (state.autoParkingOne === 'warehouse' ? 1 : 0),
+        autoStatusOne: 'fully'
+      };
+
+    case 'AUTO_STATUS_TWO_PARTIALLY':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload,
+        autoStatusTwo: 'partially'
+      };
+
+    case 'AUTO_STATUS_TWO_FULLY':
+      return {
+        ...state,
+        totalScore: state.totalScore - action.payload + 3,
+        autoStatusTwo: 'fully'
+      };
+
+    default:
+      return state;
+  }
+}
 
 export default function MainScreen() {
+  const [state, dispatch] = useReducer(reducer, {
+    totalScore: 0,
+    duckDelivered: false,
+    autoStorageFreight: 0,
+    autoFreightOne: 0,
+    autoFreightTwo: 0,
+    autoFreightThree: 0,
+    autoParkingOne: 'none',
+    autoParkingTwo: 'none',
+    autoStatusOne: 'partially',
+    autoStatusTwo: 'partially',
+    autoBonusOne: 'none',
+    autoBonusTwo: 'none'
+  });
   const [autonomousScore, setAutonomousScore] = React.useState(0);
   const [teleoperatedScore, setTeleoperatedScore] = React.useState(0);
   const [endgameScore, setEndgameScore] = React.useState(0);
@@ -307,6 +461,19 @@ export default function MainScreen() {
     setTotalScore(autonomousScore + teleoperatedScore + endgameScore);
   }, [autonomousScore, teleoperatedScore, endgameScore]);
 
+  const findScore = (str: string): number => {
+    switch (str) {
+      case 'none':
+        return 0;
+      case 'storage':
+        return 3;
+      case 'warehouse':
+        return 5;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <Center _dark={{ bg: 'gray.900' }} _light={{ bg: 'gray.50' }} flex={1}>
       <Box width={'full'} height={'full'} padding={4}>
@@ -314,6 +481,7 @@ export default function MainScreen() {
           showsVerticalScrollIndicator={Platform.OS !== 'web' ? false : true}
         >
           <VStack>
+            <ThemeToggle />
             <Text fontSize={'3xl'} fontWeight={'semibold'}>
               Match Scorer
             </Text>
@@ -329,7 +497,7 @@ export default function MainScreen() {
             </InputElement>
 
             <Text fontSize={'lg'} fontWeight={'semibold'} marginTop={4}>
-              Autonomous: {autonomousScore}
+              Autonomous: {state.totalScore}
             </Text>
             <Separator />
             <InputElement text="Duck delivered">
@@ -349,26 +517,27 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Storage Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{autoStorageFreight}</Text>
+                <Text marginRight={'2'}>{state.autoStorageFreight}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoStorageFreight(
-                      autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
-                    );
-                    setTeleStorageFreight(
-                      autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
-                    );
-                    setTeleoperatedScore(
-                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 1
-                    );
-                    setAutonomousScore(
-                      autoStorageFreight === 0
-                        ? autonomousScore
-                        : autonomousScore - 2
-                    );
+                    dispatch({ type: 'AUTO_STORAGE_FREIGHT_DECREMENT' });
+                    // setAutoStorageFreight(
+                    //   autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
+                    // );
+                    // setTeleStorageFreight(
+                    //   autoStorageFreight === 0 ? 0 : autoStorageFreight - 1
+                    // );
+                    // setTeleoperatedScore(
+                    //   teleoperatedScore === 0 ? 0 : teleoperatedScore - 1
+                    // );
+                    // setAutonomousScore(
+                    //   autoStorageFreight === 0
+                    //     ? autonomousScore
+                    //     : autonomousScore - 2
+                    // );
                   }}
                 >
                   <AntDesign name="minus" size={18} color="white" />
@@ -377,10 +546,11 @@ export default function MainScreen() {
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoStorageFreight(autoStorageFreight + 1);
-                    setTeleStorageFreight(autoStorageFreight + 1);
-                    setTeleoperatedScore(teleoperatedScore + 1);
-                    setAutonomousScore(autonomousScore + 2);
+                    // setAutoStorageFreight(autoStorageFreight + 1);
+                    // setTeleStorageFreight(autoStorageFreight + 1);
+                    // setTeleoperatedScore(teleoperatedScore + 1);
+                    // setAutonomousScore(autonomousScore + 2);
+                    dispatch({ type: 'AUTO_STORAGE_FREIGHT_INCREMENT' });
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -389,26 +559,28 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 1 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{autoFreightOne}</Text>
+                <Text marginRight={'2'}>{state.autoFreightOne}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   marginRight={'2'}
                   onPress={() => {
-                    setAutoFreightOne(
-                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
-                    );
-                    setTeleFreightOne(
-                      autoFreightOne === 0 ? 0 : autoFreightOne - 1
-                    );
-                    setTeleoperatedScore(
-                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 2
-                    );
-                    setAutonomousScore(
-                      autoFreightOne === 0
-                        ? autonomousScore
-                        : autonomousScore - 6
-                    );
+                    dispatch({ type: 'AUTO_FREIGHT_ONE_DECREMENT' });
+                    // dispatch({ type: 'AUTO_FREIGHT_ONE_DECREMENT' });
+                    // setAutoFreightOne(
+                    //   autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    // );
+                    // setTeleFreightOne(
+                    //   autoFreightOne === 0 ? 0 : autoFreightOne - 1
+                    // );
+                    // setTeleoperatedScore(
+                    //   teleoperatedScore === 0 ? 0 : teleoperatedScore - 2
+                    // );
+                    // setAutonomousScore(
+                    //   autoFreightOne === 0
+                    //     ? autonomousScore
+                    //     : autonomousScore - 2
+                    // );
                   }}
                 >
                   <AntDesign name="minus" size={18} color="white" />
@@ -417,10 +589,13 @@ export default function MainScreen() {
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoFreightOne(autoFreightOne + 1);
-                    setTeleFreightOne(autoFreightOne + 1);
-                    setTeleoperatedScore(teleoperatedScore + 2);
-                    setAutonomousScore(autonomousScore + 6);
+                    dispatch({ type: 'AUTO_FREIGHT_ONE_INCREMENT' });
+                    console.log(state.autoFreightOne);
+
+                    // setAutoFreightOne(autoFreightOne + 1);
+                    // setTeleFreightOne(autoFreightOne + 1);
+                    // setTeleoperatedScore(teleoperatedScore + 2);
+                    // setAutonomousScore(autonomousScore + 2);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -429,26 +604,27 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 2 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{autoFreightTwo}</Text>
+                <Text marginRight={'2'}>{state.autoFreightTwo}</Text>
                 <Button
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   marginRight={'2'}
                   onPress={() => {
-                    setAutoFreightTwo(
-                      autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
-                    );
-                    setTeleFreightTwo(
-                      autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
-                    );
-                    setTeleoperatedScore(
-                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 4
-                    );
-                    setAutonomousScore(
-                      autoFreightTwo === 0
-                        ? autonomousScore
-                        : autonomousScore - 6
-                    );
+                    // setAutoFreightTwo(
+                    //   autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
+                    // );
+                    // setTeleFreightTwo(
+                    //   autoFreightTwo === 0 ? 0 : autoFreightTwo - 1
+                    // );
+                    // setTeleoperatedScore(
+                    //   teleoperatedScore === 0 ? 0 : teleoperatedScore - 4
+                    // );
+                    // setAutonomousScore(
+                    //   autoFreightTwo === 0
+                    //     ? autonomousScore
+                    //     : autonomousScore - 4
+                    // );
+                    dispatch({ type: 'AUTO_FREIGHT_TWO_DECREMENT' });
                   }}
                 >
                   <AntDesign name="minus" size={18} color="white" />
@@ -457,10 +633,11 @@ export default function MainScreen() {
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoFreightTwo(autoFreightTwo + 1);
-                    setTeleFreightTwo(autoFreightTwo + 1);
-                    setTeleoperatedScore(teleoperatedScore + 4);
-                    setAutonomousScore(autonomousScore + 6);
+                    // setAutoFreightTwo(autoFreightTwo + 1);
+                    // setTeleFreightTwo(autoFreightTwo + 1);
+                    // setTeleoperatedScore(teleoperatedScore + 4);
+                    // setAutonomousScore(autonomousScore + 4);
+                    dispatch({ type: 'AUTO_FREIGHT_TWO_INCREMENT' });
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -469,26 +646,27 @@ export default function MainScreen() {
             </InputElement>
             <InputElement text="Level 3 Freight">
               <Box display={'flex'} flexDir={'row'} alignItems={'center'}>
-                <Text marginRight={'2'}>{autoFreightThree}</Text>
+                <Text marginRight={'2'}>{state.autoFreightThree}</Text>
                 <Button
                   marginRight={'2'}
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoFreightThree(
-                      autoFreightThree === 0 ? 0 : autoFreightThree - 1
-                    );
-                    setTeleFreightThree(
-                      autoFreightThree === 0 ? 0 : autoFreightThree - 1
-                    );
-                    setTeleoperatedScore(
-                      teleoperatedScore === 0 ? 0 : teleoperatedScore - 6
-                    );
-                    setAutonomousScore(
-                      autoFreightThree === 0
-                        ? autonomousScore
-                        : autonomousScore - 6
-                    );
+                    // setAutoFreightThree(
+                    //   autoFreightThree === 0 ? 0 : autoFreightThree - 1
+                    // );
+                    // setTeleFreightThree(
+                    //   autoFreightThree === 0 ? 0 : autoFreightThree - 1
+                    // );
+                    // setTeleoperatedScore(
+                    //   teleoperatedScore === 0 ? 0 : teleoperatedScore - 6
+                    // );
+                    // setAutonomousScore(
+                    //   autoFreightThree === 0
+                    //     ? autonomousScore
+                    //     : autonomousScore - 6
+                    // );
+                    dispatch({ type: 'AUTO_FREIGHT_THREE_DECREMENT' });
                   }}
                 >
                   <AntDesign name="minus" size={18} color="white" />
@@ -497,10 +675,11 @@ export default function MainScreen() {
                   backgroundColor={'red.700'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    setAutoFreightThree(autoFreightThree + 1);
-                    setTeleFreightThree(autoFreightThree + 1);
-                    setTeleoperatedScore(teleoperatedScore + 6);
-                    setAutonomousScore(autonomousScore + 6);
+                    // setAutoFreightThree(autoFreightThree + 1);
+                    // setTeleFreightThree(autoFreightThree + 1);
+                    // setTeleoperatedScore(teleoperatedScore + 6);
+                    // setAutonomousScore(autonomousScore + 6);
+                    dispatch({ type: 'AUTO_FREIGHT_THREE_INCREMENT' });
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -513,9 +692,16 @@ export default function MainScreen() {
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
-                    parkingOne === 'none' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'none' ? 'red.500' : 'red.700'
                   }
-                  onPress={() => handleParkingChange('none', 1)}
+                  // onPress={() => handleParkingChange('none', 1)}
+                  onPress={() => {
+                    // dispatch({ type: 'AUTO_PARKING_ONE_CHANGE', payload: 'none' });
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_NONE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+                  }}
                 >
                   None
                 </Button>
@@ -523,21 +709,30 @@ export default function MainScreen() {
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
-                    parkingOne === 'storage' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'storage' ? 'red.500' : 'red.700'
                   }
                   onPress={() => {
-                    handleParkingChange('storage', 1);
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_STORAGE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+                    // handleParkingChange('storage', 1);
                   }}
                 >
                   Storage
                 </Button>
                 <Button
                   backgroundColor={
-                    parkingOne === 'warehouse' ? 'red.500' : 'red.700'
+                    state.autoParkingOne === 'warehouse' ? 'red.500' : 'red.700'
                   }
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    handleParkingChange('warehouse', 1);
+                    dispatch({
+                      type: 'AUTO_PARKING_ONE_WAREHOUSE',
+                      payload: findScore(state.autoParkingOne)
+                    });
+
+                    // handleParkingChange('warehouse', 1);
                   }}
                 >
                   Warehouse
@@ -550,13 +745,14 @@ export default function MainScreen() {
                   marginRight={'2'}
                   _pressed={{ backgroundColor: 'red.600' }}
                   backgroundColor={
-                    statusOne === 'partially' && parkingOne !== 'none'
+                    state.autoStatusOne === 'partially' &&
+                    state.autoParkingOne !== 'none'
                       ? 'red.500'
                       : 'red.700'
                   }
                   onPress={() => {
-                    if (parkingOne !== 'none') {
-                      setStatusOne('partially');
+                    if (state.autoParkingOne !== 'none') {
+                      dispatch({ type: 'AUTO_STATUS_ONE_PARTIALLY' });
                     }
                   }}
                 >
@@ -564,13 +760,16 @@ export default function MainScreen() {
                 </Button>
                 <Button
                   backgroundColor={
-                    statusOne === 'fully' && parkingOne !== 'none'
+                    state.autoStatusOne === 'fully' &&
+                    state.autoParkingOne !== 'none'
                       ? 'red.500'
                       : 'red.700'
                   }
                   _pressed={{ backgroundColor: 'red.600' }}
                   onPress={() => {
-                    if (parkingOne !== 'none') setStatusOne('fully');
+                    if (state.autoParkingOne !== 'none') {
+                      dispatch({ type: 'AUTO_STATUS_ONE_FULLY' });
+                    }
                   }}
                 >
                   Full

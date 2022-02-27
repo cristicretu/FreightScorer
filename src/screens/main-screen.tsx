@@ -407,7 +407,7 @@ export default function MainScreen() {
                     setAutonomousScore(
                       autoFreightOne === 0
                         ? autonomousScore
-                        : autonomousScore - 2
+                        : autonomousScore - 6
                     );
                   }}
                 >
@@ -420,7 +420,7 @@ export default function MainScreen() {
                     setAutoFreightOne(autoFreightOne + 1);
                     setTeleFreightOne(autoFreightOne + 1);
                     setTeleoperatedScore(teleoperatedScore + 2);
-                    setAutonomousScore(autonomousScore + 2);
+                    setAutonomousScore(autonomousScore + 6);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
@@ -447,7 +447,7 @@ export default function MainScreen() {
                     setAutonomousScore(
                       autoFreightTwo === 0
                         ? autonomousScore
-                        : autonomousScore - 4
+                        : autonomousScore - 6
                     );
                   }}
                 >
@@ -460,7 +460,7 @@ export default function MainScreen() {
                     setAutoFreightTwo(autoFreightTwo + 1);
                     setTeleFreightTwo(autoFreightTwo + 1);
                     setTeleoperatedScore(teleoperatedScore + 4);
-                    setAutonomousScore(autonomousScore + 4);
+                    setAutonomousScore(autonomousScore + 6);
                   }}
                 >
                   <AntDesign name="plus" size={18} color="white" />
